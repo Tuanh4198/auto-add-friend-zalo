@@ -53,7 +53,64 @@ if exist "C:\Program Files\Tesseract-OCR\tesseract.exe" (
     goto :end
 )
 
-echo 🚀 Đang tải và cài đặt Tesseract OCR...
+REM Kiểm tra xem có file installer đi kèm không
+if exist "tesseract-ocr-w64-setup-5.4.0.20240606.exe" (
+    echo 🔍 Tìm thấy file installer Tesseract đi kèm!
+    echo 📁 File: tesseract-ocr-w64-setup-5.4.0.20240606.exe
+    echo.
+    echo 🚀 Đang cài đặt Tesseract OCR từ file đi kèm...
+    echo.
+    
+    REM Cài đặt Tesseract với tham số silent
+    echo 🔧 Đang cài đặt Tesseract OCR...
+    echo ⏳ Vui lòng chờ...
+    tesseract-ocr-w64-setup-5.4.0.20240606.exe /S /D=C:\Program Files\Tesseract-OCR
+    
+    REM Chờ 10 giây để cài đặt hoàn tất
+    timeout /t 10 /nobreak >nul
+    
+    echo.
+    echo ✅ Cài đặt hoàn tất!
+    echo 📁 Tesseract được cài tại: C:\Program Files\Tesseract-OCR\
+    echo.
+    
+    REM Copy vào thư mục portable
+    echo 🔧 Đang copy vào thư mục portable...
+    
+    REM Tạo thư mục portable
+    if not exist "tesseract-portable" mkdir "tesseract-portable"
+    if not exist "tesseract-portable\bin" mkdir "tesseract-portable\bin"
+    if not exist "tesseract-portable\tessdata" mkdir "tesseract-portable\tessdata"
+    
+    REM Copy tesseract.exe
+    if exist "C:\Program Files\Tesseract-OCR\tesseract.exe" (
+        copy "C:\Program Files\Tesseract-OCR\tesseract.exe" "tesseract-portable\bin\"
+        echo ✅ Đã copy tesseract.exe vào portable!
+    ) else (
+        echo ❌ Không tìm thấy tesseract.exe sau khi cài đặt!
+    )
+    
+    REM Copy tessdata
+    if exist "C:\Program Files\Tesseract-OCR\tessdata" (
+        xcopy "C:\Program Files\Tesseract-OCR\tessdata\*" "tesseract-portable\tessdata\" /E /I /Y >nul
+        echo ✅ Đã copy tessdata vào portable!
+    ) else (
+        echo ⚠️ Không tìm thấy tessdata sau khi cài đặt!
+    )
+    
+    REM Tạo file config
+    echo # Tesseract Portable Configuration > "tesseract-portable\tesseract.conf"
+    echo # Đường dẫn tới thư mục tessdata >> "tesseract-portable\tesseract.conf"
+    echo TESSDATA_PREFIX=./tessdata/ >> "tesseract-portable\tesseract.conf"
+    echo # Ngôn ngữ mặc định >> "tesseract-portable\tesseract.conf"
+    echo LANG=eng >> "tesseract-portable\tesseract.conf"
+    
+    echo ✅ Đã tạo file config!
+    echo.
+    goto :end
+)
+
+echo 🚀 Đang tải và cài đặt Tesseract OCR từ internet...
 echo.
 
 REM Tạo thư mục tạm
@@ -62,17 +119,20 @@ cd temp
 
 REM Tải Tesseract OCR
 echo 📥 Đang tải file cài đặt...
-powershell -Command "Invoke-WebRequest -Uri 'https://github.com/UB-Mannheim/tesseract/releases/download/v5.3.1.20230401/tesseract-ocr-w64-setup-5.3.1.20230401.exe' -OutFile 'tesseract-installer.exe'"
+powershell -Command "Invoke-WebRequest -Uri 'https://github.com/UB-Mannheim/tesseract/releases/download/v5.4.0.20240606/tesseract-ocr-w64-setup-5.4.0.20240606.exe' -OutFile 'tesseract-installer.exe'"
 
 if exist "tesseract-installer.exe" (
     echo ✅ Tải thành công!
     echo.
     echo 🔧 Đang cài đặt Tesseract OCR...
-    echo ⚠️  Vui lòng làm theo hướng dẫn cài đặt...
+    echo ⏳ Vui lòng chờ...
     echo.
     
     REM Cài đặt Tesseract
     tesseract-installer.exe /S /D=C:\Program Files\Tesseract-OCR
+    
+    REM Chờ 10 giây để cài đặt hoàn tất
+    timeout /t 10 /nobreak >nul
     
     echo.
     echo ✅ Cài đặt hoàn tất!
@@ -120,7 +180,7 @@ if exist "tesseract-installer.exe" (
     echo.
     echo 📋 Hướng dẫn cài đặt thủ công:
     echo 1. Truy cập: https://github.com/UB-Mannheim/tesseract/releases
-    echo 2. Tải file: tesseract-ocr-w64-setup-5.3.1.20230401.exe
+    echo 2. Tải file: tesseract-ocr-w64-setup-5.4.0.20240606.exe
     echo 3. Cài đặt vào: C:\Program Files\Tesseract-OCR\
     echo 4. Copy tesseract.exe vào: tesseract-portable\bin\
     echo 5. Copy tessdata vào: tesseract-portable\tessdata\

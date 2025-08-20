@@ -1,0 +1,37 @@
+# 🚀 Auto Click Tool - Khởi động nhanh
+
+## 🎯 Cách sử dụng nhanh:
+
+### 1️⃣ Chuẩn bị
+- Mở Zalo và đăng nhập
+- Mở file `input.csv` → thêm số điện thoại vào cột A
+- Chỉnh sửa file `message.txt` → thay đổi nội dung tin nhắn
+
+### 2️⃣ Cài đặt Tesseract (nếu cần)
+- Chạy `setup_tesseract.bat` (tự động - sử dụng file đi kèm)
+- Hoặc chạy `setup_tesseract_manual.bat` (hướng dẫn thủ công)
+
+### 3️⃣ Chạy tool
+- Double-click: `run_tool.bat`
+- Hoặc double-click: `AutoClickTool.exe`
+
+### 4️⃣ Làm theo hướng dẫn
+- Click 5 vị trí theo thứ tự
+- Nhấn ENTER để bắt đầu
+- Nhấn ESC để dừng
+
+## ⚠️ Lưu ý:
+- Tắt Windows Defender nếu bị chặn
+- Chạy với quyền Administrator nếu cần
+- Không di chuyển chuột khi tool đang chạy
+
+## 📝 Tính năng mới:
+- ✅ Đã bao gồm file Tesseract installer
+- ✅ Tùy chỉnh tin nhắn qua file message.txt
+- ✅ Setup tự động thông minh
+
+## 📖 Xem thêm:
+- `HƯỚNG DẪN SỬ DỤNG.txt` - Hướng dẫn chi tiết
+
+---
+*Gói được tạo: 2025-08-20 21:28:08*

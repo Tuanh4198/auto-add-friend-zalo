@@ -9,6 +9,7 @@ echo ⚠️  Lưu ý:
 echo    - Đảm bảo Zalo đã mở và đăng nhập
 echo    - Không di chuyển chuột trong quá trình chạy
 echo    - Nhấn ESC để dừng chương trình
+echo    - Có thể chỉnh sửa tin nhắn trong file message.txt
 echo.
 timeout /t 5 /nobreak >nul
 echo.

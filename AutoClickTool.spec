@@ -1,7 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import collect_all
 
-datas = [('input.csv', '.'), ('tesseract-portable', 'tesseract-portable')]
+datas = [('input.csv', '.'), ('message.txt', '.')]
 binaries = []
 hiddenimports = ['pynput.keyboard._win32', 'pynput.mouse._win32', 'cv2', 'PIL', 'pytesseract', 'numpy', 'pyautogui', 'pynput']
 tmp_ret = collect_all('pytesseract')

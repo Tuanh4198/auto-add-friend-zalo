@@ -35,6 +35,7 @@ def setup_tesseract_path():
 pytesseract.pytesseract.tesseract_cmd = setup_tesseract_path()
 
 csv_path = "input.csv"
+message_path = "message.txt"
 click_positions = []
 stop_flag = False  # Cờ dừng chương trình
 start_flag = False  # Cờ bắt đầu chương trình
@@ -44,6 +45,27 @@ if not os.path.exists(csv_path):
     with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["Data", "Search", "Result", "AddFriend1", "InputMsg", "SendFriend"])
+
+# Nếu file message.txt chưa tồn tại → tạo mới
+if not os.path.exists(message_path):
+    with open(message_path, "w", encoding="utf-8") as f:
+        f.write("Xin chào! Tôi tìm thấy bạn qua tìm kiếm và muốn kết bạn. Hy vọng chúng ta có thể trò chuyện và tìm hiểu nhau hơn!")
+
+def load_message():
+    """Đọc nội dung tin nhắn từ file message.txt"""
+    try:
+        with open(message_path, "r", encoding="utf-8") as f:
+            message = f.read().strip()
+            if message:
+                print(f"✅ Đã đọc tin nhắn từ {message_path}: {message[:50]}...")
+                return message
+            else:
+                print("⚠️  File message.txt trống, sử dụng tin nhắn mặc định")
+                return "hello"
+    except Exception as e:
+        print(f"⚠️  Lỗi khi đọc file message.txt: {e}")
+        print("⚠️  Sử dụng tin nhắn mặc định")
+        return "hello"
 
 # === Lấy tọa độ click chuột ===
 def on_click(x, y, button, pressed):
@@ -206,7 +228,11 @@ def auto_input():
         print("⚠ Không tìm thấy số điện thoại nào trong cột A của CSV.")
         return
 
+    # Đọc nội dung tin nhắn từ file
+    message_content = load_message()
+
     print(f"📱 Tìm thấy {len(phone_numbers)} số điện thoại trong CSV")
+    print(f"💬 Tin nhắn sẽ gửi: {message_content}")
     print("🚀 Bắt đầu nhập dữ liệu... (Nhấn ESC để dừng)")
     
     # Bắt đầu listener cho ESC trong quá trình auto_input
@@ -269,9 +295,9 @@ def auto_input():
                 pyautogui.press('backspace')  # Delete
                 time.sleep(0.5)
                 
-                # Step 6: Nhập text mặc định
-                print("Step 6: Nhập text 'hello'")
-                pyautogui.write("hello")
+                # Step 6: Nhập text từ file message.txt
+                print(f"Step 6: Nhập tin nhắn: {message_content}")
+                pyautogui.write(message_content)
                 time.sleep(0.5)
                 
                 # Step 7: Click add friend và chờ 3 giây

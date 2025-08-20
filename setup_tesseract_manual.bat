@@ -7,7 +7,7 @@ echo.
 
 echo 📋 Bước 1: Tải Tesseract OCR
 echo 1. Truy cập: https://github.com/UB-Mannheim/tesseract/releases
-echo 2. Tải file: tesseract-ocr-w64-setup-5.3.1.20230401.exe
+echo 2. Tải file: tesseract-ocr-w64-setup-5.4.0.20240606.exe
 echo 3. Cài đặt vào: C:\Program Files\Tesseract-OCR\
 echo.
 

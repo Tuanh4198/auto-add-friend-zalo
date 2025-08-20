@@ -12,7 +12,8 @@ Tool tự động thêm bạn bè trên Zalo bằng cách:
 ### Bước 1: Chuẩn bị
 1. Mở Zalo và đăng nhập
 2. Mở file `input.csv` và thêm số điện thoại vào cột A (1 số/dòng)
-3. Chạy `setup_tesseract.bat` để cài đặt Tesseract OCR (nếu cần)
+3. Chỉnh sửa file `message.txt` để tùy chỉnh nội dung tin nhắn
+4. Chạy `setup_tesseract.bat` để cài đặt Tesseract OCR (nếu cần)
 
 ### Bước 2: Chạy tool
 1. Double-click `run_tool.bat` hoặc `AutoClickTool.exe`
@@ -25,6 +26,13 @@ Tool tự động thêm bạn bè trên Zalo bằng cách:
 - Tool sẽ tự động xử lý từng số điện thoại
 - Có thể dừng bất cứ lúc nào bằng ESC
 - Kết quả được lưu trong file CSV
+
+## 📝 Tùy chỉnh tin nhắn
+
+Chỉnh sửa file `message.txt` để thay đổi nội dung tin nhắn gửi đi:
+- Mở file `message.txt` bằng Notepad
+- Thay đổi nội dung tin nhắn
+- Lưu file và chạy lại tool
 
 ## ⚠️ Lưu ý quan trọng
 
