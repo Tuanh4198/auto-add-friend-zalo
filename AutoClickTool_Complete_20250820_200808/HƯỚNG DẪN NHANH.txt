@@ -1,0 +1,20 @@
+# 🚀 Hướng dẫn nhanh
+
+## Bước 1: Cài đặt Tesseract OCR
+Chạy file: setup_tesseract.bat
+
+## Bước 2: Chuẩn bị dữ liệu
+- Mở file input.csv
+- Thêm số điện thoại vào cột A (1 số/dòng)
+
+## Bước 3: Chạy tool
+- Double-click: AutoClickTool.exe
+- Hoặc chạy: run_tool.bat
+
+## ⚠️ Lưu ý
+- Có thể cần tắt Windows Defender
+- Chạy với quyền Administrator nếu cần
+- Đảm bảo độ phân giải màn hình giống nhau
+
+## 📞 Hỗ trợ
+Xem file README.md để biết thêm chi tiết

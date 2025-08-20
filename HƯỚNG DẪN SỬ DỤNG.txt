@@ -1,0 +1,66 @@
+# 🚀 Auto Click Tool - Zalo Add Friend
+
+## 📋 Mô tả
+Tool tự động thêm bạn bè trên Zalo bằng cách:
+1. Tìm kiếm số điện thoại
+2. Click vào kết quả tìm kiếm
+3. Click nút "Add friend"
+4. Nhập tin nhắn và gửi lời mời
+
+## 🎯 Cách sử dụng
+
+### Bước 1: Chuẩn bị
+1. Mở Zalo và đăng nhập
+2. Mở file `input.csv` và thêm số điện thoại vào cột A (1 số/dòng)
+3. Chạy `setup_tesseract.bat` để cài đặt Tesseract OCR (nếu cần)
+
+### Bước 2: Chạy tool
+1. Double-click `run_tool.bat` hoặc `AutoClickTool.exe`
+2. Làm theo hướng dẫn trên màn hình:
+   - Click 5 vị trí theo thứ tự: Search → Result → Add Friend → Input Msg → Send
+   - Nhấn ENTER để bắt đầu
+   - Nhấn ESC để dừng
+
+### Bước 3: Theo dõi
+- Tool sẽ tự động xử lý từng số điện thoại
+- Có thể dừng bất cứ lúc nào bằng ESC
+- Kết quả được lưu trong file CSV
+
+## ⚠️ Lưu ý quan trọng
+
+### Yêu cầu hệ thống:
+- Windows 10/11
+- Độ phân giải màn hình 1920x1080 (khuyến nghị)
+- Zalo đã cài đặt và đăng nhập
+
+### Bảo mật:
+- Tắt Windows Defender tạm thời nếu bị chặn
+- Chạy với quyền Administrator nếu cần
+- Không chia sẻ file exe với người khác
+
+### Hiệu suất:
+- Không di chuyển chuột trong quá trình chạy
+- Đảm bảo Zalo không bị che khuất
+- Tắt các ứng dụng không cần thiết
+
+## 🛠️ Xử lý lỗi
+
+### Lỗi thường gặp:
+1. **"Không tìm thấy Tesseract"**: Chạy `setup_tesseract.bat`
+2. **"File CSV không tồn tại"**: Tạo file `input.csv` với số điện thoại
+3. **"Tool không click đúng vị trí"**: Lấy lại tọa độ với cùng độ phân giải màn hình
+4. **"Windows Defender chặn"**: Thêm exception hoặc tắt tạm thời
+
+### Hỗ trợ:
+- Kiểm tra file `README.md` để biết thêm chi tiết
+- Đảm bảo tất cả file trong cùng thư mục
+- Chạy với quyền Administrator nếu cần
+
+## 📞 Liên hệ
+Nếu gặp vấn đề, vui lòng kiểm tra:
+1. File log (nếu có)
+2. Cấu hình hệ thống
+3. Phiên bản Zalo
+
+---
+*Tool được tạo tự động - Sử dụng cẩn thận*
