@@ -159,7 +159,7 @@ pause
     with open("run_tool.bat", "w", encoding="utf-8") as f:
         f.write(run_tool_content)
     
-    # File setup Tesseract
+    # File setup Tesseract cải tiến
     setup_tesseract_content = """@echo off
 chcp 65001 >nul
 echo ========================================
@@ -167,6 +167,7 @@ echo    Cài đặt Tesseract OCR
 echo ========================================
 echo.
 
+REM Kiểm tra xem Tesseract portable đã sẵn sàng chưa
 if exist "tesseract-portable\\bin\\tesseract.exe" (
     echo ✅ Tesseract portable đã sẵn sàng!
     echo 📁 Đường dẫn: tesseract-portable\\bin\\tesseract.exe
@@ -174,7 +175,47 @@ if exist "tesseract-portable\\bin\\tesseract.exe" (
     goto :end
 )
 
-echo 🚀 Đang tải Tesseract OCR...
+REM Kiểm tra xem Tesseract đã được cài đặt trong hệ thống chưa
+if exist "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" (
+    echo 🔍 Tìm thấy Tesseract trong hệ thống!
+    echo 📁 Đường dẫn: C:\\Program Files\\Tesseract-OCR\\tesseract.exe
+    echo.
+    echo 🔧 Đang copy vào thư mục portable...
+    
+    REM Tạo thư mục portable nếu chưa có
+    if not exist "tesseract-portable" mkdir tesseract-portable
+    if not exist "tesseract-portable\\bin" mkdir tesseract-portable\\bin
+    if not exist "tesseract-portable\\tessdata" mkdir tesseract-portable\\tessdata
+    
+    REM Copy tesseract.exe
+    copy "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" "tesseract-portable\\bin\\"
+    if exist "tesseract-portable\\bin\\tesseract.exe" (
+        echo ✅ Đã copy tesseract.exe thành công!
+    ) else (
+        echo ❌ Không thể copy tesseract.exe!
+    )
+    
+    REM Copy tessdata
+    if exist "C:\\Program Files\\Tesseract-OCR\\tessdata" (
+        xcopy "C:\\Program Files\\Tesseract-OCR\\tessdata\\*" "tesseract-portable\\tessdata\\" /E /I /Y >nul
+        echo ✅ Đã copy tessdata thành công!
+    ) else (
+        echo ⚠️ Không tìm thấy tessdata trong hệ thống!
+    )
+    
+    REM Tạo file config
+    echo # Tesseract Portable Configuration > "tesseract-portable\\tesseract.conf"
+    echo # Đường dẫn tới thư mục tessdata >> "tesseract-portable\\tesseract.conf"
+    echo TESSDATA_PREFIX=./tessdata/ >> "tesseract-portable\\tesseract.conf"
+    echo # Ngôn ngữ mặc định >> "tesseract-portable\\tesseract.conf"
+    echo LANG=eng >> "tesseract-portable\\tesseract.conf"
+    
+    echo ✅ Đã tạo file config!
+    echo.
+    goto :end
+)
+
+echo 🚀 Đang tải và cài đặt Tesseract OCR...
 echo.
 
 REM Tạo thư mục tạm
@@ -191,6 +232,8 @@ if exist "tesseract-installer.exe" (
     echo 🔧 Đang cài đặt Tesseract OCR...
     echo ⚠️  Vui lòng làm theo hướng dẫn cài đặt...
     echo.
+    
+    REM Cài đặt Tesseract
     tesseract-installer.exe /S /D=C:\\Program Files\\Tesseract-OCR
     
     echo.
@@ -198,8 +241,42 @@ if exist "tesseract-installer.exe" (
     echo 📁 Tesseract được cài tại: C:\\Program Files\\Tesseract-OCR\\
     echo.
     
+    REM Copy vào thư mục portable
+    echo 🔧 Đang copy vào thư mục portable...
+    
+    REM Tạo thư mục portable
+    if not exist "..\\tesseract-portable" mkdir "..\\tesseract-portable"
+    if not exist "..\\tesseract-portable\\bin" mkdir "..\\tesseract-portable\\bin"
+    if not exist "..\\tesseract-portable\\tessdata" mkdir "..\\tesseract-portable\\tessdata"
+    
+    REM Copy tesseract.exe
+    if exist "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" (
+        copy "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" "..\\tesseract-portable\\bin\\"
+        echo ✅ Đã copy tesseract.exe vào portable!
+    ) else (
+        echo ❌ Không tìm thấy tesseract.exe sau khi cài đặt!
+    )
+    
+    REM Copy tessdata
+    if exist "C:\\Program Files\\Tesseract-OCR\\tessdata" (
+        xcopy "C:\\Program Files\\Tesseract-OCR\\tessdata\\*" "..\\tesseract-portable\\tessdata\\" /E /I /Y >nul
+        echo ✅ Đã copy tessdata vào portable!
+    ) else (
+        echo ⚠️ Không tìm thấy tessdata sau khi cài đặt!
+    )
+    
+    REM Tạo file config
+    echo # Tesseract Portable Configuration > "..\\tesseract-portable\\tesseract.conf"
+    echo # Đường dẫn tới thư mục tessdata >> "..\\tesseract-portable\\tesseract.conf"
+    echo TESSDATA_PREFIX=./tessdata/ >> "..\\tesseract-portable\\tesseract.conf"
+    echo # Ngôn ngữ mặc định >> "..\\tesseract-portable\\tesseract.conf"
+    echo LANG=eng >> "..\\tesseract-portable\\tesseract.conf"
+    
+    echo ✅ Đã tạo file config!
+    
     REM Xóa file tạm
     del tesseract-installer.exe
+    
 ) else (
     echo ❌ Không thể tải file cài đặt!
     echo.
@@ -207,6 +284,10 @@ if exist "tesseract-installer.exe" (
     echo 1. Truy cập: https://github.com/UB-Mannheim/tesseract/releases
     echo 2. Tải file: tesseract-ocr-w64-setup-5.3.1.20230401.exe
     echo 3. Cài đặt vào: C:\\Program Files\\Tesseract-OCR\\
+    echo 4. Copy tesseract.exe vào: tesseract-portable\\bin\\
+    echo 5. Copy tessdata vào: tesseract-portable\\tessdata\\
+    echo.
+    echo 🔧 Hoặc chạy script này lại sau khi cài đặt thủ công!
 )
 
 cd ..
@@ -215,11 +296,59 @@ rmdir /s /q temp
 :end
 echo.
 echo 🎉 Hoàn tất! Bây giờ bạn có thể chạy AutoClickTool.exe
+echo.
+echo 📋 Kiểm tra:
+if exist "tesseract-portable\\bin\\tesseract.exe" (
+    echo ✅ Tesseract portable: Sẵn sàng
+) else (
+    echo ❌ Tesseract portable: Chưa sẵn sàng
+)
+
+if exist "tesseract-portable\\tessdata\\eng.traineddata" (
+    echo ✅ Tessdata English: Sẵn sàng
+) else (
+    echo ⚠️ Tessdata English: Chưa có (có thể tải thêm)
+)
+
+echo.
 pause
 """
     
     with open("setup_tesseract.bat", "w", encoding="utf-8") as f:
         f.write(setup_tesseract_content)
+    
+    # File setup thủ công
+    setup_manual_content = """@echo off
+chcp 65001 >nul
+echo ========================================
+echo    Hướng dẫn cài đặt Tesseract thủ công
+echo ========================================
+echo.
+
+echo 📋 Bước 1: Tải Tesseract OCR
+echo 1. Truy cập: https://github.com/UB-Mannheim/tesseract/releases
+echo 2. Tải file: tesseract-ocr-w64-setup-5.3.1.20230401.exe
+echo 3. Cài đặt vào: C:\\Program Files\\Tesseract-OCR\\
+echo.
+
+echo 📋 Bước 2: Copy vào thư mục portable
+echo 1. Copy file: C:\\Program Files\\Tesseract-OCR\\tesseract.exe
+echo 2. Paste vào: tesseract-portable\\bin\\
+echo 3. Copy thư mục: C:\\Program Files\\Tesseract-OCR\\tessdata
+echo 4. Paste vào: tesseract-portable\\tessdata\\
+echo.
+
+echo 📋 Bước 3: Kiểm tra
+echo 1. Kiểm tra file: tesseract-portable\\bin\\tesseract.exe
+echo 2. Kiểm tra file: tesseract-portable\\tessdata\\eng.traineddata
+echo.
+
+echo 🎉 Hoàn tất! Bây giờ bạn có thể chạy AutoClickTool.exe
+pause
+"""
+    
+    with open("setup_tesseract_manual.bat", "w", encoding="utf-8") as f:
+        f.write(setup_manual_content)
     
     # File hướng dẫn sử dụng
     guide_content = """# 🚀 Auto Click Tool - Zalo Add Friend
@@ -270,7 +399,9 @@ Tool tự động thêm bạn bè trên Zalo bằng cách:
 ## 🛠️ Xử lý lỗi
 
 ### Lỗi thường gặp:
-1. **"Không tìm thấy Tesseract"**: Chạy `setup_tesseract.bat`
+1. **"Không tìm thấy Tesseract"**: 
+   - Chạy `setup_tesseract.bat` (tự động)
+   - Hoặc chạy `setup_tesseract_manual.bat` (hướng dẫn thủ công)
 2. **"File CSV không tồn tại"**: Tạo file `input.csv` với số điện thoại
 3. **"Tool không click đúng vị trí"**: Lấy lại tọa độ với cùng độ phân giải màn hình
 4. **"Windows Defender chặn"**: Thêm exception hoặc tắt tạm thời
@@ -313,6 +444,7 @@ def create_standalone_package():
         ("input.csv", "input.csv"),
         ("run_tool.bat", "run_tool.bat"),
         ("setup_tesseract.bat", "setup_tesseract.bat"),
+        ("setup_tesseract_manual.bat", "setup_tesseract_manual.bat"),
         ("HƯỚNG DẪN SỬ DỤNG.txt", "HƯỚNG DẪN SỬ DỤNG.txt"),
         ("README.md", "README.md")
     ]
@@ -339,11 +471,15 @@ def create_standalone_package():
 - Mở Zalo và đăng nhập
 - Mở file `input.csv` → thêm số điện thoại vào cột A
 
-### 2️⃣ Chạy tool
+### 2️⃣ Cài đặt Tesseract (nếu cần)
+- Chạy `setup_tesseract.bat` (tự động)
+- Hoặc chạy `setup_tesseract_manual.bat` (hướng dẫn thủ công)
+
+### 3️⃣ Chạy tool
 - Double-click: `run_tool.bat`
 - Hoặc double-click: `AutoClickTool.exe`
 
-### 3️⃣ Làm theo hướng dẫn
+### 4️⃣ Làm theo hướng dẫn
 - Click 5 vị trí theo thứ tự
 - Nhấn ENTER để bắt đầu
 - Nhấn ESC để dừng
@@ -395,21 +531,24 @@ def main():
     print("   ✅ AutoClickTool.exe - File chính (standalone)")
     print("   ✅ input.csv - File dữ liệu")
     print("   ✅ run_tool.bat - Script chạy với hướng dẫn")
-    print("   ✅ setup_tesseract.bat - Script cài Tesseract")
+    print("   ✅ setup_tesseract.bat - Script cài Tesseract (tự động)")
+    print("   ✅ setup_tesseract_manual.bat - Script cài Tesseract (thủ công)")
     print("   ✅ tesseract-portable/ - Tesseract portable")
     print("   ✅ HƯỚNG DẪN SỬ DỤNG.txt - Hướng dẫn chi tiết")
     print("   ✅ KHỞI ĐỘNG NHANH.txt - Hướng dẫn nhanh")
     print("   ✅ README.md - Thông tin kỹ thuật")
     print("\n🎯 Cách sử dụng trên máy khác:")
     print("   1. Copy thư mục gói sang máy đích")
-    print("   2. Double-click run_tool.bat")
-    print("   3. Làm theo hướng dẫn trên màn hình")
-    print("   4. Không cần cài đặt gì thêm!")
+    print("   2. Chạy setup_tesseract.bat để cài Tesseract")
+    print("   3. Double-click run_tool.bat")
+    print("   4. Làm theo hướng dẫn trên màn hình")
+    print("   5. Không cần cài đặt gì thêm!")
     print("\n💡 Ưu điểm của gói standalone:")
     print("   - Không cần cài Python")
     print("   - Không cần cài thư viện")
     print("   - Chạy được ngay trên mọi máy Windows")
     print("   - Bao gồm tất cả dependencies")
+    print("   - Có script setup tự động và thủ công")
 
 if __name__ == "__main__":
     main()

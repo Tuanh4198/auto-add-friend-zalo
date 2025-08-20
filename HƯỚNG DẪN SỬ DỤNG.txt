@@ -46,7 +46,9 @@ Tool tự động thêm bạn bè trên Zalo bằng cách:
 ## 🛠️ Xử lý lỗi
 
 ### Lỗi thường gặp:
-1. **"Không tìm thấy Tesseract"**: Chạy `setup_tesseract.bat`
+1. **"Không tìm thấy Tesseract"**: 
+   - Chạy `setup_tesseract.bat` (tự động)
+   - Hoặc chạy `setup_tesseract_manual.bat` (hướng dẫn thủ công)
 2. **"File CSV không tồn tại"**: Tạo file `input.csv` với số điện thoại
 3. **"Tool không click đúng vị trí"**: Lấy lại tọa độ với cùng độ phân giải màn hình
 4. **"Windows Defender chặn"**: Thêm exception hoặc tắt tạm thời
